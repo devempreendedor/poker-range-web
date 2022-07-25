@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Add, Button, FolderSwitch, Main, Topbar, Wrapper } from './styled';
 import { MdArrowDropDown } from "react-icons/md"
+import { CreateFolderModal } from "../../components"
 
 interface Props {
     children: React.ReactNode
 }
 
-function Layout({ children }: Props) {
+const Layout = ({ children }: Props) => {
     return (
         <Wrapper>
             <Topbar>
@@ -21,6 +22,7 @@ function Layout({ children }: Props) {
             <Main>
                 {children}
             </Main>
+            <CreateFolderModal open={true} onClose={() => {}} />
         </Wrapper>
     )
 }
