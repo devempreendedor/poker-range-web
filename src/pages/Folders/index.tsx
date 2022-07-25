@@ -1,7 +1,8 @@
+import { Layout } from "../../components";
 import * as React from "react";
 
 function Folders() {
-  return <div>Folders</div>;
+  return <Layout>Folders</Layout>;
 }
 
 export default Folders;
