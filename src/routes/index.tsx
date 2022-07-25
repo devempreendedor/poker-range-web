@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 //Pages
 import Home from "../pages/Home"
@@ -8,17 +8,11 @@ import Folder from "../pages/Folder"
 
 function Router() {
     return (
-        <Switch>
-            <Route exact path="/">
-                <Home />
-            </Route>
-            <Route exact path="/folders">
-                <Folders />
-            </Route>
-            <Route path="/folders/:id">
-                <Folder />
-            </Route>
-        </Switch>
+        <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/folders' element={<Folders />} />
+            <Route path='/folders/:id' element={<Folder />} />
+        </Routes>
     )
 }
 

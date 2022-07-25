@@ -1,10 +1,12 @@
 import * as React from "react";
+import { useParams } from "react-router-dom";
 
 function Folder() {
+  const params = useParams()
 
   return (
     <>
-      <div>Folder: 1</div>
+      <div>Folder: {params.id}</div>
     </>
   )
 }
