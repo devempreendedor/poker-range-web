@@ -6,6 +6,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   entry: './src/main.tsx',
@@ -70,6 +71,7 @@ module.exports = {
       extensions: ['.tsx', '.ts', '.js'],
       exclude: 'node_modules',
       context: 'src'
-    })
+    }),
+    new TsconfigPathsPlugin()
   ]
 };
