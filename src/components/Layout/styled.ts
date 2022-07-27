@@ -1,5 +1,9 @@
 import styled from "styled-components"
 
+type Props = {
+    open?: boolean;
+}
+
 export const Wrapper = styled.div``
 
 export const Topbar = styled.div`
@@ -11,9 +15,7 @@ export const Topbar = styled.div`
     padding: 0 20px;
 `
 
-export const Main = styled.div`
-    padding: 20px;
-`
+export const Main = styled.div``
 
 export const FolderSwitch = styled.div`
     display: flex;
@@ -42,4 +44,32 @@ export const Button = styled.div`
     justify-content: space-between;
     min-width: 120px;
     cursor: pointer;
+`
+
+export const FolderWrapper = styled.div`
+    position: relative;    
+`
+
+export const FoldersContent = styled.div`
+    position: absolute;
+    background-color: #1b252e;
+    width: 100%;
+    color: rgba(255,255,255,0.9);
+    font-weight: 400;
+    font-size: 0.8rem;
+    display: none;
+
+    ${({ open }: Props) => open && `
+        display: flex;
+        flex-direction: column;
+    `}
+
+    div {
+        padding: 12px;
+        cursor: pointer;
+        
+        &:hover {
+            opacity: 0.9;
+        }
+    }
 `

@@ -3,11 +3,12 @@ import { Wrapper } from './styled';
 
 type Props = {
     children: React.ReactNode
+    onClick(): void
 }
 
-function Button({ children }: Props) {
+function Button({ children, ...props }: Props) {
     return ( 
-        <Wrapper>
+        <Wrapper {...props}>
             {children}
         </Wrapper>
      );
