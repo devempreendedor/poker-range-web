@@ -1,6 +1,6 @@
 import { Button, ComboMatrix, Layout } from "../../components";
 import * as React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useRange } from "../../context/ranges";
 import { organizeRangeByPosition } from "../../utils";
 import { Content, Header, PositionMenuItemContent, PositionsMenu, PositionsMenuItem, PositionsMenuItemButton, Wrapper } from "./styled";
@@ -8,21 +8,40 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 
 function Folder() {
   const params = useParams()
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const rangeIdSelected = searchParams.get('r')
+
   const { ranges, listRanges, loading } = useRange()
-  const [opened, setOpened] = React.useState(null);
+  const [opened, setOpened] = React.useState(rangeIdSelected);
+  const [rangeSelected, setRangeSelected] = React.useState(null)
+
+
+  React.useEffect(() => {
+    if (rangeIdSelected && ranges.length) {
+      const r = ranges.find((r) => r._id === rangeIdSelected)
+      setRangeSelected(r)
+      setOpened(r.position)
+    }
+  }, [rangeIdSelected, ranges])
 
 
   React.useEffect(() => {
     listRanges(params.id)
   }, [])
 
-  function handleToggle(i: number) {
-    if (opened && opened === i.toString()) {
+  function handleToggle(f: string) {
+    if (opened && opened === f) {
       return setOpened(null)
     }
-
-    setOpened(i.toString())
+    setOpened(f)
   }
+
+  function handleRange(r: string) {
+    setSearchParams({ r }, { replace: true })
+  }
+
+  console.log("#### rangeSelected =>", rangeSelected)
 
   function renderContent() {
     if (!ranges.length) {
@@ -39,20 +58,20 @@ function Folder() {
             <h3>Posições</h3>
           </Header>
           {
-            organizeRangeByPosition(ranges).map((range, idx) => (
+            organizeRangeByPosition(ranges).map((range) => (
               <PositionsMenuItem>
-                <PositionsMenuItemButton onClick={() => handleToggle(idx)}>
+                <PositionsMenuItemButton onClick={() => handleToggle(range.position)}>
                   <span>{range.position}</span>
                   {
-                    opened === idx.toString()
+                    opened === range.toString()
                       ? <MdKeyboardArrowUp />
                       : <MdKeyboardArrowDown />
                   }
                 </PositionsMenuItemButton>
-                <PositionMenuItemContent open={opened === idx.toString()}>
+                <PositionMenuItemContent open={opened === range.position}>
                   {
                     range.ranges.map((r) => (
-                      <PositionsMenuItemButton submenu>
+                      <PositionsMenuItemButton onClick={() => handleRange(r._id)} submenu>
                         {r.name}
                       </PositionsMenuItemButton>
                     ))
