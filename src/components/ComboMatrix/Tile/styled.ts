@@ -12,6 +12,11 @@ export const Combo = styled.div`
     margin: 2px;
     overflow: hidden;
     cursor: pointer;
+
+    ${({ color }) => color && `
+        background-color: ${color};
+        color: #fff;
+    `}
 `
 
 export const Content = styled.div`

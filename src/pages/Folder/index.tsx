@@ -46,7 +46,6 @@ function Folder() {
     setSearchParams({ r }, { replace: true })
   }
 
-  console.log("#### rangeSelected =>", rangeSelected)
 
   function renderContent() {
     if (!ranges.length) {

@@ -17,6 +17,8 @@ type TypeRangeContext = {
     colorLoading: boolean
     removeColor(id: string): void
     selectColor(data: Color): void
+    combos: any[]
+    addCombo(combo: any): void
 }
 
 const RangeContext = React.createContext({} as TypeRangeContext)
@@ -28,6 +30,7 @@ export const RangeProvider = ({ children }: Props) => {
     const [loading, setLoading] = React.useState(true)
     const [colorSelected, setColorSelected] = React.useState(null)
     const [colorLoading, setColorLoading] = React.useState(false)
+    const [combos, setCombos] = React.useState([])
 
     async function listRanges(folderId: string) {
         setLoading(true)
@@ -71,9 +74,22 @@ export const RangeProvider = ({ children }: Props) => {
             if (colorSelected._id === colorId) {
                 setColorSelected(arr[0])
             }
-
         }
         setColorLoading(false)
+    }
+
+    function addCombo(combo: any) {
+        const arr = [...combos]
+
+        const existCombo = arr.findIndex(a => a.combo === combo.combo)
+
+        if (existCombo !== -1) {
+            arr.splice(existCombo, 1)
+        } else {
+            arr.push(combo)
+        }
+
+        setCombos(arr)
     }
 
     return (
@@ -87,7 +103,10 @@ export const RangeProvider = ({ children }: Props) => {
             addNewColor,
             colorLoading,
             removeColor,
-            selectColor: (data: Color) => setColorSelected(data)
+            selectColor: (data: Color) => setColorSelected(data),
+            combos,
+            addCombo
+            
         }}>
             {children}
         </RangeContext.Provider>
