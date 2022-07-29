@@ -23,4 +23,5 @@ export interface Color {
 
 export interface Combo {
     combo: string
+    color: Color
 }

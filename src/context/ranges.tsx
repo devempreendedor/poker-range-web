@@ -1,6 +1,6 @@
 import api from '../config/api';
 import * as React from 'react';
-import { Color, Range } from '../types/range';
+import { Color, Range, Combo } from '../types/range';
 
 type Props = {
     children: React.ReactNode
@@ -17,8 +17,9 @@ type TypeRangeContext = {
     colorLoading: boolean
     removeColor(id: string): void
     selectColor(data: Color): void
-    combos: any[]
-    addCombo(combo: any): void
+    combos: Combo[]
+    addCombo(combo: Combo): void
+    clearCombos(): void
 }
 
 const RangeContext = React.createContext({} as TypeRangeContext)
@@ -78,7 +79,7 @@ export const RangeProvider = ({ children }: Props) => {
         setColorLoading(false)
     }
 
-    function addCombo(combo: any) {
+    function addCombo(combo: Combo) {
         const arr = [...combos]
 
         const existCombo = arr.findIndex(a => a.combo === combo.combo)
@@ -105,7 +106,8 @@ export const RangeProvider = ({ children }: Props) => {
             removeColor,
             selectColor: (data: Color) => setColorSelected(data),
             combos,
-            addCombo
+            addCombo,
+            clearCombos: () => setCombos([])
             
         }}>
             {children}

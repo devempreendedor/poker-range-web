@@ -1,4 +1,4 @@
-import { Button, ComboMatrix, Layout, PropertiesBar } from "../../components";
+import { Button, ComboMatrix, Layout, PropertiesBar, RangeTopBar } from "../../components";
 import * as React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useRange } from "../../context/ranges";
@@ -14,7 +14,7 @@ function Folder() {
 
   const { ranges, listRanges, loading, listColors } = useRange()
   const [opened, setOpened] = React.useState(rangeIdSelected);
-  const [rangeSelected, setRangeSelected] = React.useState(null)
+  const [, setRangeSelected] = React.useState(null)
 
   React.useEffect(() => {
     if (rangeIdSelected) {
@@ -87,9 +87,12 @@ function Folder() {
           }
         </PositionsMenu>
         <div style={{ display: "flex", justifyContent: "space-between", width: '100%' }}>
-          <Content>
-            <ComboMatrix />
-          </Content>
+          <div style={{ width: '100%' }}>
+            <RangeTopBar />
+            <Content>
+              <ComboMatrix />
+            </Content>
+          </div>
           <PropertiesBar />
         </div>
       </Wrapper>
