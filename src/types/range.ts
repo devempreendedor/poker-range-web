@@ -18,6 +18,7 @@ export interface RangeByPosition {
 export interface Color {
     hex: string
     _id: string
+    description?: string
 }
 
 export interface Combo {
