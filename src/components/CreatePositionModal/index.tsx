@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { organizeRangeByPosition } from '../../utils';
-import { Modal, TextField, FormGroup, Button, Select } from "../";
+import { Modal, TextField, FormGroup, Button } from "../";
 import { useRange } from '../../context/ranges';
 
-function CreateRangeModal() {
+function CreatePositionModal() {
 
     const { newRangeModal, setNewRangeModal, ranges, createRange, listRanges } = useRange()
-    const positions = organizeRangeByPosition(ranges).map(r => ({ label: r.position, value: r.position }))
 
     const [values, setValues] = React.useState({
-        name: "",
+        name: "Open Raise",
         position: ""
     })
 
@@ -33,18 +32,15 @@ function CreateRangeModal() {
     return (
         <Modal open={newRangeModal} onClose={setNewRangeModal}>
             <FormGroup>
-                <TextField onChange={(e) => handleChange("name", e.target.value)} label="Nome" placeholder='Nome do range' />
-            </FormGroup>
-            <FormGroup>
-                <Select onChange={(v) => handleChange("position", v)} label='Posição' options={positions} />
+                <TextField onChange={(e) => handleChange("position", e.target.value)} label="Posição" placeholder='Nome da posição' />
             </FormGroup>
             <div style={{ marginTop: 40 }}>
                 <Button onClick={handleSubmit}>
-                    Criar range
+                    Criar posição
                 </Button>
             </div>
         </Modal>
     );
 }
 
-export default CreateRangeModal;
+export default CreatePositionModal;

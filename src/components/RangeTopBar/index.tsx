@@ -3,6 +3,7 @@ import { Button, Wrapper } from './styled';
 import { MdSave, MdOutlineCleaningServices, MdAddCircleOutline } from "react-icons/md"
 import { useRange } from '../../context/ranges';
 import { useSearchParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function RangeTopBar() {
     const { clearCombos, setNewRangeModal, updateRange, ranges } = useRange()
@@ -13,6 +14,7 @@ function RangeTopBar() {
     async function handleUpdate() {
         const range = ranges.find(r => r._id === rangeId)
         await updateRange(range)
+        toast.success('Range atualizado')
     }
 
     return ( 

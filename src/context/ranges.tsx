@@ -18,6 +18,7 @@ type TypeRangeContext = {
     combos: Combo[]
     newRangeModal: boolean
     rangeSelected: Range | null
+    newPositionModal: boolean
     listRanges(folderId: string): void
     listColors(rangeId: string): void
     addNewColor(id: string): void
@@ -30,6 +31,7 @@ type TypeRangeContext = {
     updateRange(range: Range): void
     getRange(id: string): void,
     updateColor(value: Color): void
+    setNewPositionModal(): void
 }
 
 const RangeContext = React.createContext({} as TypeRangeContext)
@@ -42,8 +44,17 @@ export const RangeProvider = ({ children }: Props) => {
     const [colorSelected, setColorSelected] = React.useState(null)
     const [colorLoading, setColorLoading] = React.useState(false)
     const [combos, setCombos] = React.useState([])
-    const [newRangeModal, setNewRangeModal] = React.useState(false)
     const [rangeSelected, setRangeSelected] = React.useState(null)
+
+    // Modais
+    const [newRangeModal, setNewRangeModal] = React.useState(false)
+    const [newPositionModal, setNewPositionModal] = React.useState(false)
+
+    React.useEffect(() => {
+        if (colors.length) {
+                setColorSelected(colors[0])
+        }
+    }, [colors])
 
     async function listRanges(folderId: string) {
         setLoading(true)
@@ -66,7 +77,6 @@ export const RangeProvider = ({ children }: Props) => {
         const params = { rangeId }
         const response = await api.get(`/colors`, { params })
         setColors(response.data)
-        setColorSelected(response.data[0])
     }
 
     async function addNewColor(rangeId: string) {
@@ -159,6 +169,7 @@ export const RangeProvider = ({ children }: Props) => {
             combos,
             newRangeModal,
             rangeSelected,
+            newPositionModal,
             addNewColor,
             listColors,
             listRanges,
@@ -170,7 +181,8 @@ export const RangeProvider = ({ children }: Props) => {
             createRange,
             updateRange,
             getRange,
-            updateColor
+            updateColor,
+            setNewPositionModal: () => setNewPositionModal(!newPositionModal)
             
         }}>
             {children}

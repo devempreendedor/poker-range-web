@@ -8,41 +8,35 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 
 function Folder() {
   const params = useParams()
+
+  console.log("P", params.id)
   const [searchParams, setSearchParams] = useSearchParams();
 
   const rangeIdSelected = searchParams.get('r')
 
-  const { ranges, listRanges, loading, listColors, getRange, combos } = useRange()
+  const { ranges, loading, listRanges, rangeSelected, getRange, listColors } = useRange()
   const [opened, setOpened] = React.useState(rangeIdSelected);
-  const [, setRangeSelected] = React.useState(null)
-
-  console.log("combos", combos)
 
   React.useEffect(() => {
-      if (ranges.length && !rangeIdSelected) {
-        setSearchParams({ r: ranges[0]._id }, { replace: true })
-      }
+    // Carrega todos os ranges
+    if (params.id) {
+      listRanges(params.id)
+    }
+  }, [params.id])
+
+  React.useEffect(() => {
+    // Carrega todos as cores
+    // if (ranges.length) {
+    //   getRange(ranges[0]._id)
+    //   setSearchParams({ r: ranges[0]._id }, { replace: true })
+    // }
   }, [ranges])
 
   React.useEffect(() => {
-    if (rangeIdSelected) {
-      listColors(rangeIdSelected)
+    if (rangeSelected) {
+      listColors(rangeSelected._id)
     }
-  }, [rangeIdSelected])
-
-  React.useEffect(() => {
-    if (rangeIdSelected && ranges.length) {
-      const r = ranges.find((r) => r._id === rangeIdSelected)
-      setRangeSelected(r)
-      getRange(rangeIdSelected)
-      setOpened(r.position)
-    }
-  }, [rangeIdSelected, ranges])
-
-
-  React.useEffect(() => {
-    listRanges(params.id)
-  }, [])
+  }, [rangeSelected])
 
   function handleToggle(f: string) {
     if (opened && opened === f) {
@@ -51,7 +45,8 @@ function Folder() {
     setOpened(f)
   }
 
-  function handleRange(r: string) {
+  async function handleRange(r: string) {
+    await getRange(r)
     setSearchParams({ r }, { replace: true })
   }
 

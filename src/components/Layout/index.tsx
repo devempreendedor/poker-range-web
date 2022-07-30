@@ -3,7 +3,7 @@ import { Add, Button, FoldersContent, FolderSwitch, FolderWrapper, Main, Topbar,
 import { MdArrowDropDown } from "react-icons/md"
 import { CreateFolderModal } from "../../components"
 import { useFolder } from '../../context/folder';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 interface Props {
     children: React.ReactNode
@@ -13,6 +13,7 @@ interface Props {
 const Layout = ({ children, noFolderSelect }: Props) => {
 
     const [openFolder, setOpenFolder] = React.useState(false)
+    const [searchParams] = useSearchParams();
     const { setFolderModal, folders  } = useFolder()
     const navigate = useNavigate()
     const params = useParams()
@@ -27,7 +28,8 @@ const Layout = ({ children, noFolderSelect }: Props) => {
 
     function handleChange(id: string) {
         setOpenFolder(false)
-        navigate(`/folders/${id}`)
+        searchParams.delete('r')
+        navigate(`/folders/${id}`,)
     }
 
     return (
