@@ -1,10 +1,16 @@
+import { ComboMatrix, Container, Layout } from '../../components';
 import * as React from 'react';
+import { Content } from './styled';
 
 function Viewer() {
     return ( 
-        <div>
-            Viewer
-        </div>
+        <Layout>
+            <Container>
+                <Content>
+                    <ComboMatrix />
+                </Content>
+            </Container>
+        </Layout>
      );
 }
 

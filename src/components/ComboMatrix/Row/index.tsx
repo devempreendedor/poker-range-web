@@ -4,13 +4,14 @@ import { Row } from './styled';
 
 type ComboRowProps = {
     row: string[]
+    viewer?: boolean
 }
 
-function ComboRow({ row }: ComboRowProps) {
+function ComboRow({ row, viewer }: ComboRowProps) {
 
     return ( 
         <Row>
-            {row.map((combo, i) => <ComboTile key={i} combo={combo} />)}
+            {row.map((combo, i) => <ComboTile viewer={viewer} key={i} combo={combo} />)}
         </Row>
         
      );

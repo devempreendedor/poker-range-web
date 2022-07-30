@@ -4,12 +4,14 @@ import { Combo, Content } from './styled';
 
 type ComboTileProps = {
     combo: string
+    viewer?: boolean
 }
 
-function ComboTile({ combo }: ComboTileProps) {
+function ComboTile({ combo, viewer }: ComboTileProps) {
     const { combos, addCombo, colorSelected } = useRange()
 
     function handleCombo() {
+        if (viewer) return
         addCombo({
             combo,
             color: colorSelected
@@ -18,7 +20,7 @@ function ComboTile({ combo }: ComboTileProps) {
 
     function whatColor() {
         const existColor = combos.find(c => c.combo === combo)
-        return existColor ? existColor.color.hex : ""
+        return existColor ? existColor?.color?.hex : ""
     }
     
     return (

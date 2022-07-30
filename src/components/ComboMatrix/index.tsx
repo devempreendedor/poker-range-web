@@ -7,11 +7,14 @@ const chunk = (arr: string[], size: number) =>
     arr.slice(i * size, i * size + size)
   );
 
+type Props = {
+  viewer?: boolean
+}
 
-function ComboMatrix() {
+function ComboMatrix({ viewer }: Props) {
     return (
         <div>
-            {chunk(constants.combos, 13).map((row, i) => <ComboRow row={row} key={i} />)}
+            {chunk(constants.combos, 13).map((row, i) => <ComboRow viewer={viewer} row={row} key={i} />)}
 
         </div>
     )
