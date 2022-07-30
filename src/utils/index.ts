@@ -7,7 +7,7 @@ export const typeGame = [
     },
     {
         label: "Torneio",
-        value: "TOURNAMENT"
+        value: "MTT"
     }
 ]
 
