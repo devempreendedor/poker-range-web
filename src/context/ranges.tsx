@@ -9,6 +9,10 @@ type Props = {
     children: React.ReactNode
 }
 
+interface ResponseRange extends Response {
+    data: Range
+}
+
 type TypeRangeContext = {
     ranges: Range[]
     colors: Color[]
@@ -27,11 +31,11 @@ type TypeRangeContext = {
     addCombo(combo: Combo): void
     clearCombos(): void
     setNewRangeModal(): void
-    createRange(o: object): Promise<Response>
+    createRange(o: object): Promise<ResponseRange>
     updateRange(range: Range): void
     getRange(id: string): void,
     updateColor(value: Color): void
-    setNewPositionModal(): void
+    setNewPositionModal(v: boolean): void
     setRangeSelected(range: Range): void
 }
 
@@ -133,8 +137,8 @@ export const RangeProvider = ({ children }: Props) => {
         setCombos(arr)
     }
 
-    const createRange = async (body: object): Promise<Response> => {
-        const response: Response = await api.post(`/ranges`, body)
+    const createRange = async (body: object): Promise<ResponseRange> => {
+        const response: ResponseRange = await api.post(`/ranges`, body)
         return response
     }
 
@@ -192,7 +196,7 @@ export const RangeProvider = ({ children }: Props) => {
             updateRange,
             getRange,
             updateColor,
-            setNewPositionModal: () => setNewPositionModal(!newPositionModal),
+            setNewPositionModal: (v: boolean) => setNewPositionModal(v),
             setRangeSelected
             
         }}>

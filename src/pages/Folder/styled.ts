@@ -56,8 +56,18 @@ export const PositionMenuItemContent = styled.div`
 export const Header = styled.div`
     padding: 20px;
     border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     
     h3 {
         color: rgba(255,255,255,0.6) !important;
     }
+`
+
+export const AddFolder = styled.div`
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
 `

@@ -1,10 +1,10 @@
-import { Button, ComboMatrix, Layout, PropertiesBar, RangeTopBar, CreateRangeModal } from "../../components";
+import { Button, ComboMatrix, Layout, PropertiesBar, RangeTopBar, CreateRangeModal, CreatePositionModal } from "../../components";
 import * as React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useRange } from "../../context/ranges";
 import { organizeRangeByPosition } from "../../utils";
-import { Content, Header, PositionMenuItemContent, PositionsMenu, PositionsMenuItem, PositionsMenuItemButton, Wrapper } from "./styled";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { Content, Header, PositionMenuItemContent, PositionsMenu, PositionsMenuItem, PositionsMenuItemButton, Wrapper, AddFolder } from "./styled";
+import { MdAddCircleOutline, MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { Range } from "../../types/range"
 
 function Folder() {
@@ -13,7 +13,7 @@ function Folder() {
 
   const rangeIdSelected = searchParams.get('r')
 
-  const { ranges, loading, listRanges, rangeSelected, setRangeSelected, listColors } = useRange()
+  const { ranges, loading, listRanges, rangeSelected, setRangeSelected, listColors, setNewPositionModal } = useRange()
   const [opened, setOpened] = React.useState(null);
 
 
@@ -74,6 +74,9 @@ function Folder() {
         <PositionsMenu>
           <Header>
             <h3>Posições</h3>
+            <AddFolder onClick={() => setNewPositionModal(true)}>
+              <MdAddCircleOutline />
+            </AddFolder>
           </Header>
           {
             organizeRangeByPosition(ranges).map((range) => (
@@ -125,6 +128,7 @@ function Folder() {
         )
       }
       <CreateRangeModal />
+      <CreatePositionModal />
     </Layout>
   )
 }

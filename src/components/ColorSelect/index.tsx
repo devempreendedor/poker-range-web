@@ -34,41 +34,45 @@ function ColorSelect({ color, handleChangeColor, removeColor, selected, selectCo
             hex: value
         }
 
-        setCurrentColor(data)
-        handleChangeColor(data)
+        if (currentColor.hex !== value) {
+
+            setCurrentColor(data)
+            handleChangeColor(data)
+        }
+
         setOpen(false)
     }
 
-    return ( 
+    return (
         <Wrapper>
             <PickColor>
-                <div style={{display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Radio onClick={selectColor} selected={selected}>
                         <div />
                     </Radio>
                 </div>
-                <div style={{display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                     <ColorComponent onClick={() => setOpen(true)} color={currentColor.hex} />
                 </div>
                 <TextField value={currentColor.description} onChange={(e) => handleChange('description', e.target.value)} onBlur={handleSubmit} placeholder='Nome' />
             </PickColor>
             {
                 !noClose && (
-                <Close onClick={removeColor}>
-                    <RiCloseFill />
-                </Close>
+                    <Close onClick={removeColor}>
+                        <RiCloseFill />
+                    </Close>
                 )
             }
-            
+
             {
                 open && (
                     <ColorPickerWrapper>
-                        <BlockPicker onChangeComplete={(v) => handleColor(v.hex)} />
+                        <BlockPicker color={color.hex} onChangeComplete={(v) => handleColor(v.hex)} />
                     </ColorPickerWrapper>
                 )
             }
         </Wrapper>
-     );
+    );
 }
 
 export default ColorSelect;
