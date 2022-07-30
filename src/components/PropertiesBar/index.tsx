@@ -15,14 +15,13 @@ function PropertiesBar() {
         await updateColor(color)
     }
 
-
     return (
         <Bar>
             <h4>Propriedades</h4>
             <div style={{ marginTop: 20 }}>
                 {
                     colors.map((color) => (
-                        <ColorSelect noClose={colors.length === 0} key={color._id} selectColor={() => selectColor(color)} removeColor={() => removeColor(color._id)} selected={colorSelected._id === color._id} handleChangeColor={(value: Color) => handleUpdatecolor(value)} color={color} />
+                        <ColorSelect noClose={colors.length === 1} key={color._id} selectColor={() => selectColor(color)} removeColor={() => removeColor(color._id)} selected={colorSelected._id === color._id} handleChangeColor={(value: Color) => handleUpdatecolor(value)} color={color} />
                     ))
                 }
                 <div style={{ marginTop: 20 }}>
