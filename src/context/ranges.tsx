@@ -64,6 +64,8 @@ export const RangeProvider = ({ children }: Props) => {
     React.useEffect(() => {
         if (rangeSelected) {
             setCombos(rangeSelected.combos)
+        } else {
+            setCombos([])
         }
 
     }, [rangeSelected])
