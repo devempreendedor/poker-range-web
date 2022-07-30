@@ -11,10 +11,20 @@ export default createGlobalStyle`
 
     body {
         background-color: #f0f3f4;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: "Roboto", sans-serif;
         font-size: 16px;
         overflow-x: hidden;
         line-height: 1.5;
         color: #58666e;
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: 500;
+        line-height: 1.2;
+        color: #0E1133;
+    }
+
+    h4 {
+        font-size: 22px;
     }
 `
