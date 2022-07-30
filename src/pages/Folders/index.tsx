@@ -1,4 +1,4 @@
-import { Layout } from "../../components";
+import { Button, Container, Layout } from "../../components";
 import * as React from "react";
 import { useFolder } from "../../context/folder";
 import { Card, CardInfo } from "./styled";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function Folders() {
 
-  const { listFolders, folders } = useFolder()
+  const { listFolders, folders, setFolderModal } = useFolder()
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -15,8 +15,19 @@ function Folders() {
   }, [])
 
   return (
-      <Layout noFolderSelect>
+    <Layout noFolderSelect>
+      <Container>
         <h1>Minhas Pastas</h1>
+        {
+          !folders.length && (
+            <div>
+              <p>Nenhuma pasta encontrada.</p>
+              <Button onClick={() => setFolderModal()}>
+                Criar pasta
+              </Button>
+            </div>
+          )
+        }
         {folders.map((folder: Folder) => (
           <Card>
             <h1 onClick={() => navigate(`/folders/${folder._id}`)}>{folder.name}</h1>
@@ -26,7 +37,8 @@ function Folders() {
             </CardInfo>
           </Card>
         ))}
-      </Layout>
+      </Container>
+    </Layout>
   );
 }
 

@@ -7,6 +7,7 @@ export interface Range {
     _id: string
     name: string
     position: string
+    folderId: string
 }
 
 export interface RangeByPosition {

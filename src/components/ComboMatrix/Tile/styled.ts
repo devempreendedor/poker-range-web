@@ -7,8 +7,8 @@ export const Combo = styled.div`
     border-radius: 4px;
     display: inline-block;
     font-size: 1rem;
-    width: 40px;
-    height: 40px;
+    width: 33px;
+    height: 33px;
     margin: 2px;
     overflow: hidden;
     cursor: pointer;
@@ -17,6 +17,11 @@ export const Combo = styled.div`
         background-color: ${color};
         color: #fff;
     `}
+
+    @media(min-width: 1400px) {
+        width: 40px;
+        height: 40px;
+    }
 `
 
 export const Content = styled.div`

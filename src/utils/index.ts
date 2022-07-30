@@ -1,6 +1,6 @@
 import { Range, RangeByPosition } from "../types/range"
 
-export const typeGames = [
+export const typeGame = [
     {
         label: "Cashgame",
         value: "CASHGAME"
@@ -22,14 +22,33 @@ export const formats = [
     }
 ]
 
-export function organizeRangeByPosition (values: Range[]) {
+
+export const stacks = [
+    {
+        label: "100 BB",
+        value: "100BB"
+    },
+    {
+        label: "50 BB",
+        value: "50BB"
+    }
+]
+
+export function organizeRangeByPosition(values: Range[]) {
     const data: RangeByPosition[] = []
 
     values.map((range) => {
-        data.push({
-            position: range.position,
-            ranges: values.filter(v => v.position === range.position)
-        })
+
+        const existPosition = data.findIndex(r => r.position === range.position)
+
+        if (existPosition === -1) {
+            data.push({
+                position: range.position,
+                ranges: values.filter(v => v.position === range.position)
+            })
+        }
+
+
     })
 
     return data

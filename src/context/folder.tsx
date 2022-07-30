@@ -1,29 +1,36 @@
 import * as React from 'react';
 import { Folder } from '../types/folder';
 import api from '../config/api';
+import { Response } from '../types/api';
 
 type Props = {
     children: React.ReactNode
 }
 
+interface FolderResponse extends Response {
+    data: Folder
+}
+
 export type FolderBody = {
     name: string
-    typeGames: string
+    typeGame: string
     format: string
 }
 
 type TypeRangeContext = {
     listFolders(): void
     folders: Folder[]
-    createFolder(body: FolderBody): void
+    createFolder(body: FolderBody): Promise<FolderResponse>
     folderModal: boolean
     setFolderModal(): void
+    folderLoading: boolean
+    setFolderLoading(): void
 }
 
 const FolderContext = React.createContext({} as TypeRangeContext)
 
 export const FolderProvider = ({ children }: Props) => {
-
+    const [folderLoading, setFolderLoading] = React.useState(false)
     const [folderModal, setFolderModal] = React.useState(false)
     const [folders, setFolders] = React.useState([])
 
@@ -38,11 +45,14 @@ export const FolderProvider = ({ children }: Props) => {
         setFolders(response.data)
     }
 
-    async function createFolder(body: FolderBody) {
+    async function createFolder(body: FolderBody): Promise<FolderResponse> {
+        setFolderLoading(true)
         const response = await api.post(`/folders`, body)
         if (response.status === 201) {
             listFolders()
         }
+        setFolderLoading(false)
+        return response
     }
 
     return (
@@ -51,7 +61,9 @@ export const FolderProvider = ({ children }: Props) => {
             folderModal,
             setFolderModal: () => setFolderModal(!folderModal),
             createFolder,
-            listFolders
+            listFolders,
+            folderLoading,
+            setFolderLoading: () => setFolderLoading(!folderLoading)
         }}>
             {children}
         </FolderContext.Provider>

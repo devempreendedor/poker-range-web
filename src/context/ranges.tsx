@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import api from '../config/api';
 import * as React from 'react';
 import { Color, Range, Combo } from '../types/range';
+import { Response } from '../types/api';
 
 type Props = {
     children: React.ReactNode
@@ -20,6 +22,12 @@ type TypeRangeContext = {
     combos: Combo[]
     addCombo(combo: Combo): void
     clearCombos(): void
+    newRangeModal: boolean
+    setNewRangeModal(): void
+    createRange(o: object): Promise<Response>
+    updateRange(range: Range): void
+    rangeSelected: Range | null
+    getRange(id: string): void
 }
 
 const RangeContext = React.createContext({} as TypeRangeContext)
@@ -32,6 +40,8 @@ export const RangeProvider = ({ children }: Props) => {
     const [colorSelected, setColorSelected] = React.useState(null)
     const [colorLoading, setColorLoading] = React.useState(false)
     const [combos, setCombos] = React.useState([])
+    const [newRangeModal, setNewRangeModal] = React.useState(false)
+    const [rangeSelected, setRangeSelected] = React.useState(null)
 
     async function listRanges(folderId: string) {
         setLoading(true)
@@ -39,6 +49,14 @@ export const RangeProvider = ({ children }: Props) => {
 
         const response = await api.get(`/ranges`, { params })
         setRanges(response.data)
+        setLoading(false)
+    }
+
+    async function getRange(rangeId: string) {
+        setLoading(true)
+        const response = await api.get(`/ranges/${rangeId}`)
+        setRangeSelected(response.data)
+        setCombos(response.data.combos)
         setLoading(false)
     }
 
@@ -93,6 +111,20 @@ export const RangeProvider = ({ children }: Props) => {
         setCombos(arr)
     }
 
+    const createRange = async (body: object): Promise<Response> => {
+        const response: Response = await api.post(`/ranges`, body)
+        return response
+    }
+
+    async function updateRange(range: Range) {
+        const data = {
+            ...range,
+            combos
+        }
+
+        await api.put(`/ranges/${range._id}`, data)
+    }
+
     return (
         <RangeContext.Provider value={{
             ranges,
@@ -107,7 +139,13 @@ export const RangeProvider = ({ children }: Props) => {
             selectColor: (data: Color) => setColorSelected(data),
             combos,
             addCombo,
-            clearCombos: () => setCombos([])
+            clearCombos: () => setCombos([]),
+            newRangeModal,
+            setNewRangeModal: () => setNewRangeModal(!newRangeModal),
+            createRange,
+            updateRange,
+            rangeSelected,
+            getRange
             
         }}>
             {children}

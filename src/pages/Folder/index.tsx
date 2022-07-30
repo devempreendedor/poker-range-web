@@ -1,4 +1,4 @@
-import { Button, ComboMatrix, Layout, PropertiesBar, RangeTopBar } from "../../components";
+import { Button, ComboMatrix, Layout, PropertiesBar, RangeTopBar, CreateRangeModal } from "../../components";
 import * as React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useRange } from "../../context/ranges";
@@ -12,9 +12,17 @@ function Folder() {
 
   const rangeIdSelected = searchParams.get('r')
 
-  const { ranges, listRanges, loading, listColors } = useRange()
+  const { ranges, listRanges, loading, listColors, getRange, combos } = useRange()
   const [opened, setOpened] = React.useState(rangeIdSelected);
   const [, setRangeSelected] = React.useState(null)
+
+  console.log("combos", combos)
+
+  React.useEffect(() => {
+      if (ranges.length && !rangeIdSelected) {
+        setSearchParams({ r: ranges[0]._id }, { replace: true })
+      }
+  }, [ranges])
 
   React.useEffect(() => {
     if (rangeIdSelected) {
@@ -26,6 +34,7 @@ function Folder() {
     if (rangeIdSelected && ranges.length) {
       const r = ranges.find((r) => r._id === rangeIdSelected)
       setRangeSelected(r)
+      getRange(rangeIdSelected)
       setOpened(r.position)
     }
   }, [rangeIdSelected, ranges])
@@ -87,7 +96,7 @@ function Folder() {
           }
         </PositionsMenu>
         <div style={{ display: "flex", justifyContent: "space-between", width: '100%' }}>
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <RangeTopBar />
             <Content>
               <ComboMatrix />
@@ -110,6 +119,7 @@ function Folder() {
           </div>
         )
       }
+      <CreateRangeModal />
     </Layout>
   )
 }
