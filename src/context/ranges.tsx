@@ -3,6 +3,7 @@ import api from '../config/api';
 import * as React from 'react';
 import { Color, Range, Combo } from '../types/range';
 import { Response } from '../types/api';
+import toast from 'react-hot-toast';
 
 type Props = {
     children: React.ReactNode
@@ -10,24 +11,25 @@ type Props = {
 
 type TypeRangeContext = {
     ranges: Range[]
-    listRanges(folderId: string): void
-    listColors(rangeId: string): void
     colors: Color[]
     loading: boolean
     colorSelected: Color | null
-    addNewColor(id: string): void
     colorLoading: boolean
+    combos: Combo[]
+    newRangeModal: boolean
+    rangeSelected: Range | null
+    listRanges(folderId: string): void
+    listColors(rangeId: string): void
+    addNewColor(id: string): void
     removeColor(id: string): void
     selectColor(data: Color): void
-    combos: Combo[]
     addCombo(combo: Combo): void
     clearCombos(): void
-    newRangeModal: boolean
     setNewRangeModal(): void
     createRange(o: object): Promise<Response>
     updateRange(range: Range): void
-    rangeSelected: Range | null
-    getRange(id: string): void
+    getRange(id: string): void,
+    updateColor(value: Color): void
 }
 
 const RangeContext = React.createContext({} as TypeRangeContext)
@@ -125,27 +127,50 @@ export const RangeProvider = ({ children }: Props) => {
         await api.put(`/ranges/${range._id}`, data)
     }
 
+    async function updateColor(color: Color) {
+        const response = await api.put(`/colors/${color._id}`, color)
+        if (colorSelected._id === color._id) {
+            setColorSelected(color)
+        }
+        if (response.status === 200) {
+            toast.success('Cor atualizada')
+
+            const arr = combos.map((row) => {
+                if (row.color._id === color._id) {
+                    return ({
+                        ...row,
+                        color
+                    })
+                } 
+                return row
+            })
+            setCombos(arr)
+        }
+        return response
+    }
+
     return (
         <RangeContext.Provider value={{
             ranges,
-            listRanges,
             loading,
-            listColors,
             colors,
             colorSelected,
-            addNewColor,
             colorLoading,
+            combos,
+            newRangeModal,
+            rangeSelected,
+            addNewColor,
+            listColors,
+            listRanges,
             removeColor,
             selectColor: (data: Color) => setColorSelected(data),
-            combos,
             addCombo,
             clearCombos: () => setCombos([]),
-            newRangeModal,
             setNewRangeModal: () => setNewRangeModal(!newRangeModal),
             createRange,
             updateRange,
-            rangeSelected,
-            getRange
+            getRange,
+            updateColor
             
         }}>
             {children}

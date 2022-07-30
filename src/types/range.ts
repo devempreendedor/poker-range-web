@@ -20,6 +20,7 @@ export interface Color {
     hex: string
     _id: string
     description?: string
+    rangeId: string
 }
 
 export interface Combo {
