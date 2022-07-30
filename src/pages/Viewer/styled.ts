@@ -48,3 +48,25 @@ export const ButtonRange = styled.div`
         color: #65bd77;!important;
     `}
 `
+
+export const Subtitle = styled.div`
+    display: flex;
+    padding: 20px 0;
+`
+
+export const Color = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+
+    span {
+        font-size: 0.8rem;
+    }
+`
+
+export const Squad = styled.div`
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    background-color: ${props => props.color};
+`

@@ -1,6 +1,6 @@
 import { ComboMatrix, Container, Layout } from '../../components';
 import * as React from 'react';
-import { ButtonPosition, ButtonRange, Content, Positions } from './styled';
+import { ButtonPosition, ButtonRange, Color, Content, Positions, Squad, Subtitle } from './styled';
 import { useParams } from 'react-router-dom';
 import { useRange } from '../../context/ranges';
 import { organizeRangeByPosition } from '../../utils';
@@ -10,13 +10,19 @@ function Viewer() {
 
     const params = useParams()
 
-    const {listRanges, ranges, setRangeSelected, rangeSelected } = useRange()
+    const {listRanges, ranges, setRangeSelected, rangeSelected, colors, listColors } = useRange()
     const [position, setPosition] = React.useState("")
     const [rangeByPosition, setRangesByPosition] = React.useState([])
 
     React.useEffect(() => {
         listRanges(params.id)
     }, [])
+
+    React.useEffect(() => {
+        if (rangeSelected) {
+            listColors(rangeSelected._id)
+        }
+    }, [rangeSelected])
 
     function handlePosition(range: RangeByPosition) {
         setRangesByPosition(range.ranges)
@@ -30,6 +36,16 @@ function Viewer() {
                 <Content>
                     <div>
                         <ComboMatrix viewer />
+                        <Subtitle>
+                            {
+                                colors.map((color) => (
+                                    <Color>
+                                        <Squad color={color.hex} />
+                                        <span>{color.description}</span>
+                                    </Color>
+                                ))
+                            }
+                        </Subtitle>
                     </div>
                     <div style={{ marginLeft: 20 }}>
                         <Positions>
