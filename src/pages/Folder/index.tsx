@@ -5,17 +5,18 @@ import { useRange } from "../../context/ranges";
 import { organizeRangeByPosition } from "../../utils";
 import { Content, Header, PositionMenuItemContent, PositionsMenu, PositionsMenuItem, PositionsMenuItemButton, Wrapper } from "./styled";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { Range } from "../../types/range"
 
 function Folder() {
   const params = useParams()
-
-  console.log("P", params.id)
   const [searchParams, setSearchParams] = useSearchParams();
 
   const rangeIdSelected = searchParams.get('r')
 
-  const { ranges, loading, listRanges, rangeSelected, getRange, listColors } = useRange()
-  const [opened, setOpened] = React.useState(rangeIdSelected);
+  const { ranges, loading, listRanges, rangeSelected, setRangeSelected, listColors } = useRange()
+  const [opened, setOpened] = React.useState(null);
+
+
 
   React.useEffect(() => {
     // Carrega todos os ranges
@@ -24,19 +25,28 @@ function Folder() {
     }
   }, [params.id])
 
+
   React.useEffect(() => {
-    // Carrega todos as cores
-    // if (ranges.length) {
-    //   getRange(ranges[0]._id)
-    //   setSearchParams({ r: ranges[0]._id }, { replace: true })
-    // }
-  }, [ranges])
+    if (rangeIdSelected) {
+      const range = ranges.find(r => r._id === rangeIdSelected)
+      setRangeSelected(range)
+    }
+  }, [rangeIdSelected, ranges])
 
   React.useEffect(() => {
     if (rangeSelected) {
       listColors(rangeSelected._id)
     }
   }, [rangeSelected])
+
+
+  React.useEffect(() => {
+    if (rangeIdSelected && ranges.length && !opened) {
+      const range = ranges.find(r => r._id === rangeIdSelected)
+      setOpened(range.position)
+    }
+
+  }, [rangeIdSelected, ranges])
 
   function handleToggle(f: string) {
     if (opened && opened === f) {
@@ -45,9 +55,9 @@ function Folder() {
     setOpened(f)
   }
 
-  async function handleRange(r: string) {
-    await getRange(r)
-    setSearchParams({ r }, { replace: true })
+  async function handleRange(r: Range) {
+    await setRangeSelected(r)
+    setSearchParams({ r: r._id }, { replace: true })
   }
 
 
@@ -79,7 +89,7 @@ function Folder() {
                 <PositionMenuItemContent open={opened === range.position}>
                   {
                     range.ranges.map((r) => (
-                      <PositionsMenuItemButton onClick={() => handleRange(r._id)} submenu>
+                      <PositionsMenuItemButton selected={rangeIdSelected === r._id} onClick={() => handleRange(r)} submenu>
                         {r.name}
                       </PositionsMenuItemButton>
                     ))

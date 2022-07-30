@@ -3,6 +3,7 @@ import styled from "styled-components"
 type Props = {
     open?: boolean
     submenu?: boolean
+    selected?: boolean
 }
 
 export const Wrapper = styled.div`
@@ -28,6 +29,10 @@ export const PositionsMenuItemButton = styled.div`
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    
+    ${({ selected }: Props) => selected && `
+        color: #65bd77;
+    `}
 
     &:hover {
         opacity: 0.9;

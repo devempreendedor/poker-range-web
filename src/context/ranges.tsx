@@ -32,6 +32,7 @@ type TypeRangeContext = {
     getRange(id: string): void,
     updateColor(value: Color): void
     setNewPositionModal(): void
+    setRangeSelected(range: Range): void
 }
 
 const RangeContext = React.createContext({} as TypeRangeContext)
@@ -56,8 +57,17 @@ export const RangeProvider = ({ children }: Props) => {
         }
     }, [colors])
 
+    React.useEffect(() => {
+        if (rangeSelected) {
+            setCombos(rangeSelected.combos)
+        }
+
+    }, [rangeSelected])
+
     async function listRanges(folderId: string) {
         setLoading(true)
+        setColors([])
+        setRanges([])
         const params = { folderId }
 
         const response = await api.get(`/ranges`, { params })
@@ -182,7 +192,8 @@ export const RangeProvider = ({ children }: Props) => {
             updateRange,
             getRange,
             updateColor,
-            setNewPositionModal: () => setNewPositionModal(!newPositionModal)
+            setNewPositionModal: () => setNewPositionModal(!newPositionModal),
+            setRangeSelected
             
         }}>
             {children}
